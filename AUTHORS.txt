@@ -1,0 +1,4 @@
+The main authors of this plugin are:
+ * Stephane Briand <stephane.briand@seasidetech.net>
+
+and the main contributors:

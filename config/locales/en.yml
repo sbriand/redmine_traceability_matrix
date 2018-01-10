@@ -1,0 +1,12 @@
+# English strings go here
+en:
+  project_module_traceability: Traceability Matrix
+  permission_view_mt: View traceability matrix
+
+  traceability_matrix:
+    plugin_name: Traceability Matrix
+    plugin_description: Plugin to show the traceability matrix between two lists of issues
+    menu_item_name: Traceability
+    setup: An error occurred. Please, check the plugin configuration
+    first_tracker: First issue query (rows)
+    second_tracker: Second issue query (columns)

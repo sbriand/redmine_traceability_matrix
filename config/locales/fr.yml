@@ -1,0 +1,12 @@
+# Les termes en francais sont ici
+fr:
+  project_module_traceability: Matrice de traçabilité
+  permission_view_mt: Voir la matrice de traçabilité
+
+  traceability_matrix:
+    plugin_name: Matrice de traçabilité
+    plugin_description: Ce greffon permet d'afficher une matrice de traçabilité entre deux liste de tickets (issues)
+    menu_item_name: Traçabilité
+    setup: Erreur detectée. Vérifier la configuration.
+    first_tracker: Requête pour la liste des tickets en ligne
+    second_tracker: Requête pour la liste des tickets en colonne

@@ -1,0 +1,23 @@
+
+
+<h1> <%= l(:project_module_traceability) %> </h1>
+
+
+
+<% unless flash[:error] %>
+
+<h2> Cross reference table </h2>
+  <%= render(:partial => 'mt/mt_synthese', :locals => {:issue_cols => @issue_cols, :query_cols => @query_cols,
+                     :issue_rows => @issue_rows, :query_rows => @query_rows, :issue_pairs => @issue_pairs,
+                     :not_seen_issue_cols => @not_seen_issue_cols, :split_nb_cols => 20, :show_status => true, :show_subject => false,
+                     :option_display_description => false}) %>
+  
+<h2> Detailed relation table </h2>
+  
+  <%= render(:partial => 'mt/mt_details', :locals => {:issue_cols => @issue_cols, :query_cols => @query_cols,
+                     :issue_rows => @issue_rows, :query_rows => @query_rows, :issue_pairs => @issue_pairs,
+                     :not_seen_issue_cols => @not_seen_issue_cols, :option_display_description => true}) %>
+                     
+<% end %>
+
+

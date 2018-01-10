@@ -1,0 +1,109 @@
+
+<% content_for :header_tags do %>
+  <%=  stylesheet_link_tag(Redmine::Utils.relative_url_root + "/plugin_assets/traceability_matrix/stylesheets/cross_reference_table.css") %>
+<% end %>
+
+<% unless flash[:error] %>
+
+  <% if ((issue_rows.length == 0) or (issue_cols.length == 0)) %>
+    
+    <%= textilizable "(!) _No matrix available, because at least one list of issues id empty._" %>
+
+  <% else %>
+
+    <% issue_cols_split = TraceabilityMatrixHelper.get_leaves(nil,issue_cols) %>
+    <% nb_split_table = (issue_cols_split.count.to_f/split_nb_cols).ceil %>
+    <% split_nb_cols = (issue_cols_split.count.to_f/nb_split_table).ceil %>
+        
+    <% nb_split_table.times do |table_index| %>
+      <br />
+
+      <% if nb_split_table > 1 %>
+        Table <%= table_index+1 %> sur <%= nb_split_table %>
+      <% end %>
+      <table class='list'>
+        <thead>
+          
+          <tr>
+            <td></td>
+            <td align="center" colspan="<%= issue_cols_split.length %>"><%= query_cols.name %></td>
+          </tr>
+          
+          <% depth = TraceabilityMatrixHelper.get_depth(issue_cols_split)%>
+          <% depth.times do |n| %>            
+            <tr>
+              <% if n == (depth - 1) %>
+                <td align="center"><%= query_rows.name %></td>
+              <% else %>
+                <td></td>
+              <% end %>
+              <% issue_cols_split.each do |issue_col| %> 
+                <% if TraceabilityMatrixHelper.get_level(issue_col) == n %>
+                  <td  title="<%= issue_col %>" colspan="<%= (issue_col.leaves & issue_cols_split).length %>">
+                    <% if option_display_id_col == true %>
+                      <%= link_to "#{issue_col.id}", issue_path(issue_col) %> 
+                    <% end %>
+                    <% issue_col.custom_field_values.each do |value| %>
+                      <% if value.custom_field.id == custom_field_id %>
+                        <br />
+                        <%= value%>
+                      <% end %>
+                    <% end %>
+                    
+                    <% if option_display_status_col == true %>
+                      <br />
+                      <%= issue_col.status %>
+                    <% end %>
+                    
+                    <% if show_subject_col == true %>
+                      <br />
+                      <%= issue_col.subject %>
+                    <% end %>
+                  </td>
+                <% else %>
+                  <% if (TraceabilityMatrixHelper.get_level(issue_col) < n) and (issue_col.leaf? == true) %>
+                    <td></td>
+                  <% end %>
+                <% end %>
+              <% end %>
+            </tr>
+          <% end %>
+      </thead>
+  
+      <tbody>
+        <% issue_rows.each do |issue_row| %>
+          <tr class=" <%= issue_pairs[issue_row].nil? ? "row_empty_" + cycle("odd", "even"): cycle("odd", "even") %>">
+            <td title="<%= issue_row %>">
+              <% if option_display_id_row == true %>
+                <%= link_to "#{issue_row.id}", issue_path(issue_row) %>,
+              <% end %>
+              <% if option_display_status_row == true %>
+                <%= issue_row.status %>,
+              <% end %>
+              <% issue_row.custom_field_values.each do |value| %>
+                <% if value.custom_field.id == custom_field_id %>
+                  <%= value.custom_field.name %> <%= value%>
+                <% end %>
+              <% end %>
+              <% if show_subject_row == true %>
+                <%= link_to issue_row.subject, issue_path(issue_row) %>
+              <% end %>
+              <% if option_display_description == true %>
+                <%= textilizable issue_row.description %>
+              <% end %>
+            </td>
+            <% issue_cols_split.each do |issue_col| %>
+                <td class="x">
+                  <% if issue_pairs.has_key?(issue_row) and !(issue_pairs[issue_row][issue_col]).nil? %>
+                      &#x2713;
+                  <% end %>
+                </td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <% end %>
+  <% end %>
+  
+<% end %>

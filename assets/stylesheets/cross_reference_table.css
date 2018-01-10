@@ -1,0 +1,27 @@
+tr.row_empty_odd{
+    background-color: #E0AFAF;
+}
+
+tr.row_empty_even{
+    background-color: #E09F9f;
+}
+
+tr.odd{
+    background-color: #F0F0F0;
+}
+
+tr.even{
+    background-color: #E9E9E9;
+}
+
+td.x {
+	border-left: 1px solid #E7E7E7;
+	text-align: center;
+}
+
+
+table.list {
+	margin-top: 2em;
+	margin-bottom: 2em;
+	font-size: smaller;
+}

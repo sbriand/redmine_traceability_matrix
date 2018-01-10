@@ -1,0 +1,10 @@
+<p>
+  <label><%=l :'traceability_matrix.first_tracker' %> <span class="required">*</span></label>
+  <%= select_tag 'settings[tracker0]',
+                 options_from_collection_for_select(Query.all, :id, :name, @settings['tracker0'].to_i) %>
+</p>
+<p>
+  <label><%=l :'traceability_matrix.second_tracker' %> <span class="required">*</span></label>
+  <%= select_tag 'settings[tracker1]',
+                 options_from_collection_for_select(Query.all, :id, :name, @settings['tracker1'].to_i) %>
+</p>

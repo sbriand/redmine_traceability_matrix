@@ -1,0 +1,83 @@
+
+<% content_for :header_tags do %>
+  <style type="text/css">
+    td.x {
+      border-left: 1px solid #E7E7E7;
+      text-align: left;
+    }
+    table.list {
+      margin-bottom: 2em;
+    }
+  </style>
+<%end %>
+
+
+<% unless flash[:error] %>
+  <% if ((issue_rows.length == 0) or (issue_cols.length == 0)) %>
+    <%= textilizable "(!) _Impossible de construire la matrice de tracabilite, car au moins une requete personnalisee ne renvoie aucun ticket._" %>
+  <% else %>
+  
+	  <table class="list">
+	    <thead>
+	      <th><%= query_rows.name %></th>
+	      <th><%= query_cols.name %></th>
+	    </thead>
+	
+	    <tbody>
+	      <% issue_rows.each do |issue_row| %>
+	        <% klass = cycle("odd", "even") %>
+	        <tr class="<%= klass %>"  >
+	          <td rowspan="<%= issue_pairs[issue_row].nil? ? 1 : issue_pairs[issue_row].length %>"  style="text-align:left;">
+	            <% if option_display_id_col1 == true %>
+	              <%= link_to "##{issue_row.id}", issue_path(issue_row) %>,
+	            <% end %>
+	            <% if option_display_status_col1 == true %>
+	              <%= issue_row.status %>,
+	            <% end %>
+	            <%= issue_row.subject %>
+	            <% if option_display_description_col1 == true %>
+		    <div class="description">
+			    <%= textilizable issue_row.description %>
+		    </div>
+	            <% end %>
+	          </td>
+	          <% if issue_pairs[issue_row].nil? %>
+	            <td></td>
+	          <% else %>
+	            <% first = true %>
+	            <% issue_pairs[issue_row].keys.sort.each do |issue_col| %>
+	              <% if first then first = false else %>
+	                </tr><tr class="<%= klass %>">
+	              <% end %>
+	              <td style="text-align:left;">
+	                <% if option_display_id_col2 == true %>
+	                  <%= link_to "##{issue_col.id}", issue_path(issue_col) %>,
+	                <% end %>
+	                <% if option_display_status_col2 == true %>
+	                  <%= issue_col.status %>,
+	                <% end %>
+	                <%= issue_col.subject %>
+	                <% if option_display_description_col2 == true %>
+		    	  <div class="description">
+				  <%= textilizable issue_col.description %>
+			  </div>
+	                <% end %>
+	              </td>
+	            <% end %>
+	          <% end %>
+	        </tr>
+	      <% end %>
+	      <% unless not_seen_issue_cols.empty? %>
+	        <tr class="<%= cycle("odd", "even") %>">
+	          <td></td>
+	          <td style="text-align:left;">
+	            <% not_seen_issue_cols.each do |issue_col| %>
+                      <p><%= link_to "##{issue_col.id}", issue_path(issue_col) %> <%= issue_col.subject %><p>
+	            <% end %>
+	          </td>
+	        </tr>
+	      <% end %>
+	    </tbody>
+	  </table>
+   <% end %>
+<% end %>
