@@ -160,6 +160,7 @@ module TraceabilityMatrixMacros
          "* -s : Displays the status of issues in both columns.\n" +
          "* -s1 : Displays the status of issues in column 1.\n" +
          "* -s2 : Displays the status of issues in column 2.\n\n" +
+         "* cf_xx : Display the custom field with number xx.\n" +
          "+Examples:+\n" +
          "<pre>{{traceability_matrix_detailed(1,2)}} ->  Show the matrix using issue queries with id 1 and 2\n" +
          "{{traceability_matrix_detailed(20,144,-d)}} Show the matrix, with description of issues\n</pre>\n"
@@ -190,6 +191,7 @@ module TraceabilityMatrixMacros
       option_display_status_col2 = false
       option_display_id_col1 = false
       option_display_id_col2 = false
+      custom_field_id = 0
       project = nil
             
       args[2..-1].each do |arg|
@@ -232,6 +234,8 @@ module TraceabilityMatrixMacros
           option_display_id_col2 = true
         when /^-p/
           project = Project.find(arg[3..arg.length-1])
+        when /^cf_/
+          custom_field_id = arg[3..arg.length-1].to_i
         else
           puts "sinon" + arg
         end
@@ -253,7 +257,8 @@ module TraceabilityMatrixMacros
                      :option_display_status_col1 => option_display_status_col1,
                      :option_display_status_col2 => option_display_status_col2,
                      :option_display_description_col1 => option_display_description_col1,
-                     :option_display_description_col2 => option_display_description_col2})
+                     :option_display_description_col2 => option_display_description_col2,
+                     :custom_field_id => custom_field_id})
       return disp.html_safe
 
     end # Fin macro
